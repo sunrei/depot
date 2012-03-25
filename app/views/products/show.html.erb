@@ -20,6 +20,15 @@
   <%= @product.price %>
 </p>
 
+<p>
+  <b>Author:</b>
+  <%= @product.author %>
+</p>
+
+<p>
+  <b>Publisher:</b>
+  <%= @product.publisher %>
+</p>
 
 <%= link_to 'Edit', edit_product_path(@product) %> |
 <%= link_to 'Back', products_path %>

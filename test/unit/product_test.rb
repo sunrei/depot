@@ -8,11 +8,15 @@ class ProductTest < ActiveSupport::TestCase
     assert product.errors[:description].any?
     assert product.errors[:price].any?
     assert product.errors[:image_url].any?
+    assert product.errors[:author].any?
+    assert product.errors[:publisher].any?
   end
 
   test "product price must be positive" do
     product = Product.new(:title       => "My Book Title",
                           :description => "yyy",
+                          :author      => "yyy",
+                          :publisher   => "pub1",
                           :image_url   => "zzz.jpg")
     product.price = -1
     assert product.invalid?
@@ -31,6 +35,8 @@ class ProductTest < ActiveSupport::TestCase
   def new_product(image_url)
     Product.new(:title       => "My Book Title",
                 :description => "yyy",
+                :author      => "yyy",
+                :publisher   => "pub1",
                 :price       => 1,
                 :image_url   => image_url)
   end
@@ -52,27 +58,33 @@ class ProductTest < ActiveSupport::TestCase
   test "product is not valid without a unique title" do
     product = Product.new(:title       => products(:ruby).title,
                           :description => "yyy",
+                          :author      => "yyy",
+                          :publisher   => "pub2",
                           :price       => 1,
                           :image_url   => "fred.gif")
 
     assert !product.save
-    assert_equal "has already been taken", product.errors[:title].join('; ')
+    assert_equal ". The product with such title already exists. Pick another one, please", product.errors[:title].join('; ')
   end
 
-  test "product is not valid without a unique title - i18n" do
-    product = Product.new(:title       => products(:ruby).title,
-                          :description => "yyy",
-                          :price       => 1,
-                          :image_url   => "fred.gif")
-
-    assert !product.save
-    assert_equal I18n.translate('activerecord.errors.messages.taken'),
-                 product.errors[:title].join('; ')
-  end
+#  test "product is not valid without a unique title - i18n" do
+#    product = Product.new(:title       => products(:ruby).title,
+#                          :description => "yyy",
+#                          :author      => "yyy",
+#                          :publisher   => "pub3",
+#                          :price       => 1,
+#                          :image_url   => "fred.gif")
+#
+#    assert !product.save
+#    assert_equal I18n.translate('activerecord.errors.messages.taken'),
+#                 product.errors[:title].join('; ')
+#  end
 
   test "title shood be at least 10 characters long" do
     product = Product.new(:title       => "ShortTitl",
                           :description => "yyy",
+                          :author      => "yyy",
+                          :publisher   => "pub1",
                           :price       => 1,
                           :image_url   => "zzz.jpg")
 

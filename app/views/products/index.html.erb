@@ -9,6 +9,14 @@
         <%= image_tag(product.image_url, :class => 'list_image') %>
       </td>
 
+      <td class="list_author">
+          <%= product.author %>
+      </td>
+
+      <td class="list_publisher">
+          <%= product.publisher %>
+      </td>
+
       <td class="list_description">
         <dl>
           <dt><%= product.title %></dt>
