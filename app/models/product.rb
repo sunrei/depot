@@ -1,4 +1,6 @@
 class Product < ActiveRecord::Base
+  default_scope :order => 'title'
+
   PUBLISHER = ['pub1','pub2','pub3','pub4','pub5']
 
   validates :title, :description, :image_url, :presence => {:message => " can't be empty!"}
