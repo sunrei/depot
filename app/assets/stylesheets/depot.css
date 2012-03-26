@@ -157,3 +157,7 @@
 #side .date_time{
   color: white;
 }
+
+#store .entry form, #store .entry form div {
+  display: inline;
+}

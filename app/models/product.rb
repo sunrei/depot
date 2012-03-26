@@ -1,5 +1,8 @@
 class Product < ActiveRecord::Base
   default_scope :order => 'title'
+  has_many :line_items
+
+  before_destroy :ensure_not_referenced_by_any_line_item
 
   PUBLISHER = ['pub1','pub2','pub3','pub4','pub5']
 
@@ -16,4 +19,13 @@ class Product < ActiveRecord::Base
   validates :author, :presence => {:message => " can't pe empty. Each book have an author"}, :length => {:maximum => 100, :too_long => "can't be more than 100 chars. You have probably made a mistake"}
   validates :publisher, :inclusion => {:in => PUBLISHER, :message => " should match with one that is in publisher list."}
 
+  private
+    def ensure_not_referenced_by_any_line_item
+      if line_items.count.zero?
+        return true
+      else
+        errors.add(:base, 'Line items present')
+        return false
+      end
+    end
 end
