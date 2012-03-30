@@ -1,0 +1,5 @@
+<% if(line_item = cart.line_items.find_by_product_id(product_id)) %>
+    (<%= line_item.quantity %> item, <%= number_to_currency line_item.total_price %>)
+    <%= button_to 'Remove 1', decrease_line_item_path(line_item), :method => :put, :remote => true %>
+    <%= button_to 'Remove all', remove_line_item_path(line_item), :method => :put, :remote => true %>
+<% end %>

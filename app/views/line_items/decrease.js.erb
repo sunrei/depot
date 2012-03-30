@@ -1,0 +1,6 @@
+$('#product_cart_buttons<%= @product_id %>').html("<%= escape_javascript(render(:partial => 'store/product_cart_buttons', :locals => { :cart => @cart, :product_id => @product_id })) %>");
+$('#cart').html("<%= escape_javascript(render(@cart)) %>");
+if ($('#cart tr').length==1) {
+    // Hide the cart
+    $('#cart').slideUp(1000);
+}

@@ -4,10 +4,21 @@
 
 <h1>Your Pragmatic Catalog<%= ' (viewed by you ' + pluralize(@count, 'time') + ')' if  !@count.nil? && @count > 5 %></h1>
 
+<h3>
+  Sort by:
+  <%= link_to "Price ASC", store_path(:order_by => 'price',:order => 'asc') %> ,
+  <%= link_to "Price DESC", store_path(:order_by => 'price') %> ,
+  <%= link_to "Author ASC", store_path(:order_by => 'author',:order => 'asc') %> ,
+  <%= link_to "Author DESC", store_path(:order_by => 'author') %> ,
+  <%= link_to "Title ASC", store_path(:order_by => 'title',:order => 'asc') %> ,
+  <%= link_to "Title DESC", store_path(:order_by => 'title') %>
+
+</h3>
+
 <% @products.each do |product| %>
   <div class="entry">
     <%= form_tag line_items_path(:product_id => product), :remote => true do %>
-        <%= image_submit_tag product.image_url, :class => 'product_picture'  %>
+        <%= image_submit_tag product.photo.url(:thumb), :class => 'product_picture'  %>
     <% end %>
     <h3><%= product.title %></h3>
     <%= sanitize(product.description) %>
@@ -15,6 +26,9 @@
       <span class="price"><%= number_to_currency(product.price) %></span>
       <%= button_to 'Add to Cart', line_items_path(:product_id => product),
         :remote => true %>
+      <span id="product_cart_buttons<%= product.id %>">
+            <%= render :partial => 'product_cart_buttons', :locals => { :cart => @cart, :product_id => product.id } %>
+      </span>
     </div>
   </div>
 <% end %>

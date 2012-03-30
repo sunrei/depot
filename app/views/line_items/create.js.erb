@@ -2,4 +2,5 @@ $("#notice").hide();
 //if ($('#cart tr').length == 1) { $('#cart').show('blind', 1000); }
 if ($('#cart tr').length == 1) { $('#cart').slideDown(1000); }
 $('#cart').html("<%= escape_javascript(render(@cart)) %>");
+$('#product_cart_buttons<%= @product_id %>').html("<%= escape_javascript(render(:partial => 'store/product_cart_buttons', :locals => { :cart => @cart, :product_id => @product_id })) %>");
 //$('#current_item').css({'background-color':'#88ff88'}).animate({'background-color':'#114411'}, 1000);

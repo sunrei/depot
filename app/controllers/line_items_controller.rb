@@ -43,6 +43,7 @@ class LineItemsController < ApplicationController
     @cart = current_cart
     product = Product.find(params[:product_id])
     @line_item = @cart.add_product(product.id)
+    @product_id = product.id
 
     respond_to do |format|
       if @line_item.save
@@ -82,6 +83,40 @@ class LineItemsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to current_cart, :notice => 'Item has been removed from your cart.' }
       format.json { head :no_content }
+    end
+  end
+
+  def decrease
+    @cart = current_cart
+    @line_item = @cart.decrease(params[:id])
+    @product_id = @line_item.product.id
+
+    respond_to do |format|
+      if @line_item.save
+        format.html { redirect_to store_path, notice: 'Line item was successfully updated.' }
+        format.js   {  }
+        format.json { head :ok }
+      else
+        format.html { render action: "edit" }
+        format.json { render json: @line_item.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  def remove
+    @cart = current_cart
+    line_item = @cart.line_items.find(params[:id])
+    @product_id = line_item.product.id
+
+    respond_to do |format|
+      if line_item && line_item.destroy
+        format.html { redirect_to store_path, notice: 'Line item was successfully updated.' }
+        format.js   { render :action => 'decrease' }
+        format.json { head :ok }
+      else
+        format.html { render action: "edit" }
+        format.json { render json: @line_item.errors, status: :unprocessable_entity }
+      end
     end
   end
 end
