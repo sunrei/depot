@@ -7,5 +7,6 @@ class StoreController < ApplicationController
     end
     @count = session[:counter] if session[:counter] > 5
     @products = Product.all
+    @cart = current_cart
   end
 end
